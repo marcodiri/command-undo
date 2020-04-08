@@ -1,7 +1,6 @@
 package command;
 
 import app.Application;
-import component.Editor;
 
 public class PasteCommand extends Command {
 
@@ -10,11 +9,11 @@ public class PasteCommand extends Command {
     }
 
     @Override
-    public boolean execute(Editor editor) {
+    public boolean execute() {
         if (app.clipboard != null) {
-            history.push(editor.saveSnapshot());
-            System.out.println("\nPasting \""+app.clipboard+"\" on "+editor.getName());
-            editor.replaceSelection(app.clipboard);
+            history.push(app.getActiveEditor().saveSnapshot());
+            System.out.println("\nPasting \""+app.clipboard+"\" on "+app.getActiveEditor().getName());
+            app.getActiveEditor().replaceSelection(app.clipboard);
         }
         return true;
     }

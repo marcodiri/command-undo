@@ -1,7 +1,6 @@
 package command;
 
 import app.Application;
-import component.Editor;
 
 public class CutCommand extends Command {
 
@@ -10,11 +9,11 @@ public class CutCommand extends Command {
     }
 
     @Override
-    public boolean execute(Editor editor) {
-        app.clipboard = editor.getSelection();
-        history.push(editor.saveSnapshot());
-        System.out.println("Cutting \""+app.clipboard+"\" from "+editor.getName()+"\n");
-        editor.replaceSelection("");
+    public boolean execute() {
+        app.clipboard = app.getActiveEditor().getSelection();
+        history.push(app.getActiveEditor().saveSnapshot());
+        System.out.println("Cutting \""+app.clipboard+"\" from "+app.getActiveEditor().getName()+"\n");
+        app.getActiveEditor().replaceSelection("");
         return true;
     }
 

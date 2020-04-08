@@ -1,7 +1,6 @@
 package command;
 
 import app.Application;
-import component.Editor;
 
 public class UndoCommand extends Command {
 
@@ -10,7 +9,7 @@ public class UndoCommand extends Command {
     }
 
     @Override
-    public boolean execute(Editor editor) {
+    public boolean execute() {
         app.undo();
         return false;
     }

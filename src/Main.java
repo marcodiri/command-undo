@@ -4,7 +4,7 @@ public class Main {
 
     // helper function
     static void printActiveEditorText (Application app) {
-        System.out.println(app.activeEditor.getName()+" text: \""+app.activeEditor.getText()+"\"\n");
+        System.out.println(app.getActiveEditor().getName()+" text: \""+app.getActiveEditor().getText()+"\"\n");
     } 
 
     public static void main(String[] args) {
@@ -19,23 +19,23 @@ public class Main {
         printActiveEditorText(app);
 
         // cut some text from editor1
-        app.activeEditor.setCaretPos(5);
-        app.activeEditor.setSelectionWidth(app.activeEditor.getText().length()-app.activeEditor.getCaretPos());
-        app.components.get("Ctrl+X").click();
+        app.getActiveEditor().setCaretPos(5);
+        app.getActiveEditor().setSelectionWidth(app.getActiveEditor().getText().length()-app.getActiveEditor().getCaretPos());
+        app.getControl("Ctrl+X").click();
         printActiveEditorText(app);
         // restore the cut text
-        app.components.get("Ctrl+Z").click();
+        app.getControl("Ctrl+Z").click();
         printActiveEditorText(app);
         // create editor2 and paste the cut text on it
         app.createEditor("Editor2").setText("Un altro testo");
         printActiveEditorText(app);
-        app.components.get("Ctrl+V").click();
+        app.getControl("Ctrl+V").click();
         printActiveEditorText(app);
 
         // paste the same text on the first editor at the end of the existing text
-        app.components.get("Editor1").click(); // clicking an editor makes it the activeEditor
-        app.activeEditor.setCaretPos(app.activeEditor.getText().length());
-        app.components.get("PasteButton").click();
+        app.getEditor("Editor1").click(); // clicking an editor makes it the activeEditor
+        app.getActiveEditor().setCaretPos(app.getActiveEditor().getText().length());
+        app.getControl("PasteButton").click();
         printActiveEditorText(app);
     }
 

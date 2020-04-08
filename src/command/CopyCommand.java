@@ -1,7 +1,6 @@
 package command;
 
 import app.Application;
-import component.Editor;
 
 public class CopyCommand extends Command {
 
@@ -10,9 +9,9 @@ public class CopyCommand extends Command {
     }
 
     @Override
-    public boolean execute(Editor editor) {
-        app.clipboard = editor.getSelection();
-        System.out.println("Copied \""+app.clipboard+"\" from "+editor.getName()+"\n");
+    public boolean execute() {
+        app.clipboard = app.getActiveEditor().getSelection();
+        System.out.println("Copied \""+app.clipboard+"\" from "+app.getActiveEditor().getName()+"\n");
         return false;
     }
 

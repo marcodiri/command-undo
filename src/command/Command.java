@@ -1,7 +1,6 @@
 package command;
 
 import app.Application;
-import component.Editor;
 import component.Editor.EditorMemento;
 import history.History;
 
@@ -26,10 +25,9 @@ public abstract class Command {
 
     /**
      * Execute the command on an editor. If undoable save an {@link EditorMemento} in {@link Command.history}
-     * @param editor the editor on which to execute the command
      * @return {@code true} if the command is undoable, {@code false} otherwise
      */
-    public abstract boolean execute(Editor editor);
+    public abstract boolean execute();
 
     public abstract void undo();
 

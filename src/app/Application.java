@@ -11,13 +11,15 @@ import history.History;
 
 public class Application {
 
-    public Map<String, Component> components;
-    public Editor activeEditor;
+    private Map<String, Component> controls;
+    private Map<String, Editor> editors;
+    private Editor activeEditor;
     private History<Command> commandsHistory;
     public String clipboard;
 
     public Application() {
-        components = new HashMap<>();
+        controls = new HashMap<String, Component>();
+        editors = new HashMap<>();
         commandsHistory = new History<>();
         generateUI();
     }
@@ -29,16 +31,16 @@ public class Application {
         Command undoCmd = new UndoCommand(this);
 
         // create the buttons
-        components.put("CopyButton", new Button(this, "Copy Button", copyCmd));
-        components.put("PasteButton", new Button(this, "Paste Button", pasteCmd));
-        components.put("CutButton", new Button(this, "Cut Button", cutCmd));
-        components.put("UndoButton", new Button(this, "Undo Button", undoCmd));
+        controls.put("CopyButton", new Button(this, "Copy Button", copyCmd));
+        controls.put("PasteButton", new Button(this, "Paste Button", pasteCmd));
+        controls.put("CutButton", new Button(this, "Cut Button", cutCmd));
+        controls.put("UndoButton", new Button(this, "Undo Button", undoCmd));
 
         // create the shortcuts
-        components.put("Ctrl+C", new Shortcut(this, "Copy", copyCmd));
-        components.put("Ctrl+V", new Shortcut(this, "Paste", pasteCmd));
-        components.put("Ctrl+X", new Shortcut(this, "Cut", cutCmd));
-        components.put("Ctrl+Z", new Shortcut(this, "Undo", undoCmd));
+        controls.put("Ctrl+C", new Shortcut(this, "Copy", copyCmd));
+        controls.put("Ctrl+V", new Shortcut(this, "Paste", pasteCmd));
+        controls.put("Ctrl+X", new Shortcut(this, "Cut", cutCmd));
+        controls.put("Ctrl+Z", new Shortcut(this, "Undo", undoCmd));
     }
 
     /**
@@ -48,14 +50,14 @@ public class Application {
      */
     public Editor createEditor(String name) {
         Editor newEditor = new Editor(this, name);
-        components.put(name, newEditor);
+        editors.put(name, newEditor);
         System.out.println("Created "+name);
         setActiveEditor(newEditor);
         return newEditor;
     }
 
     public void executeCommand(Command command) {
-        if(command.execute(activeEditor)) {
+        if(command.execute()) {
             commandsHistory.push(command);
         }
     }
@@ -65,6 +67,27 @@ public class Application {
         if(toUndo != null) {
             toUndo.undo();
         }
+    }
+
+    /**
+     * @return the control going by the {@code name}
+     */
+    public Component getControl(String name) {
+        return controls.get(name);
+    }
+
+    /**
+     * @return the editor going by the {@code name}
+     */
+    public Editor getEditor(String name) {
+        return editors.get(name);
+    }
+
+    /**
+     * @return the activeEditor
+     */
+    public Editor getActiveEditor() {
+        return activeEditor;
     }
 
     /**
