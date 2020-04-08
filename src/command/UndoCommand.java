@@ -9,9 +9,8 @@ public class UndoCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public void execute() {
         app.undo();
-        return false;
     }
 
     @Override

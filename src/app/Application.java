@@ -31,16 +31,16 @@ public class Application {
         Command undoCmd = new UndoCommand(this);
 
         // create the buttons
-        controls.put("CopyButton", new Button(this, "Copy Button", copyCmd));
-        controls.put("PasteButton", new Button(this, "Paste Button", pasteCmd));
-        controls.put("CutButton", new Button(this, "Cut Button", cutCmd));
-        controls.put("UndoButton", new Button(this, "Undo Button", undoCmd));
+        controls.put("CopyButton", new Button("Copy Button", copyCmd));
+        controls.put("PasteButton", new Button("Paste Button", pasteCmd));
+        controls.put("CutButton", new Button("Cut Button", cutCmd));
+        controls.put("UndoButton", new Button("Undo Button", undoCmd));
 
         // create the shortcuts
-        controls.put("Ctrl+C", new Shortcut(this, "Copy", copyCmd));
-        controls.put("Ctrl+V", new Shortcut(this, "Paste", pasteCmd));
-        controls.put("Ctrl+X", new Shortcut(this, "Cut", cutCmd));
-        controls.put("Ctrl+Z", new Shortcut(this, "Undo", undoCmd));
+        controls.put("Ctrl+C", new Shortcut("Copy", copyCmd));
+        controls.put("Ctrl+V", new Shortcut("Paste", pasteCmd));
+        controls.put("Ctrl+X", new Shortcut("Cut", cutCmd));
+        controls.put("Ctrl+Z", new Shortcut("Undo", undoCmd));
     }
 
     /**
@@ -49,17 +49,15 @@ public class Application {
      * @return the new {@link Editor}
      */
     public Editor createEditor(String name) {
-        Editor newEditor = new Editor(this, name);
+        Editor newEditor = new Editor(this, name, null);
         editors.put(name, newEditor);
         System.out.println("Created "+name);
         setActiveEditor(newEditor);
         return newEditor;
     }
 
-    public void executeCommand(Command command) {
-        if(command.execute()) {
-            commandsHistory.push(command);
-        }
+    public void saveCommand(Command command) {
+        commandsHistory.push(command);
     }
 
     public void undo() {

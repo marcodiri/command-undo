@@ -9,10 +9,9 @@ public class CopyCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public void execute() {
         app.clipboard = app.getActiveEditor().getSelection();
         System.out.println("Copied \""+app.clipboard+"\" from "+app.getActiveEditor().getName()+"\n");
-        return false;
     }
 
     @Override

@@ -27,7 +27,7 @@ public abstract class Command {
      * Execute the command on an editor. If undoable save an {@link EditorMemento} in {@link Command.history}
      * @return {@code true} if the command is undoable, {@code false} otherwise
      */
-    public abstract boolean execute();
+    public abstract void execute();
 
     public abstract void undo();
 

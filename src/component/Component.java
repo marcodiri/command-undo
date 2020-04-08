@@ -1,18 +1,18 @@
 package component;
 
-import app.Application;
 import app.UniqueID;
+import command.Command;
 
 public abstract class Component {
 
     private final int id;
     private String name;
-    protected Application app;
+    private Command command;
 
-    Component(Application app, String name) {
+    Component(String name, Command command) {
         id = UniqueID.generateID();
-        this.app = app;
         this.name = name;
+        this.command = command;
     }
 
     /**
@@ -39,6 +39,8 @@ public abstract class Component {
     /**
      * behaviour of the Component when clicked
      */
-    public abstract void click();
+    public void click() {
+        command.execute();
+    }
 
 }

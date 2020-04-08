@@ -9,13 +9,13 @@ public class PasteCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public void execute() {
         if (app.clipboard != null) {
-            history.push(app.getActiveEditor().saveSnapshot());
+            app.saveCommand(this); // notify the app that this command has been executed
+            history.push(app.getActiveEditor().saveSnapshot()); // get an EditorMemento
             System.out.println("\nPasting \""+app.clipboard+"\" on "+app.getActiveEditor().getName());
             app.getActiveEditor().replaceSelection(app.clipboard);
         }
-        return true;
     }
 
     @Override

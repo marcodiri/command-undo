@@ -3,14 +3,17 @@ package component;
 import java.sql.Timestamp;
 
 import app.Application;
+import command.Command;
 
 public class Editor extends Component {
 
+    private Application app;
     private String text;
     private int caretPos, selectionWidth;
 
-    public Editor(Application app, String name) {
-        super(app, name);
+    public Editor(Application app, String name, Command command) {
+        super(name, command);
+        this.app = app;
         text = "";
         caretPos = 0;
         selectionWidth = 0;
