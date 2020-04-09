@@ -56,6 +56,17 @@ public class Application {
         return newEditor;
     }
 
+    /**
+     * @return the commandsHistory
+     */
+    public History<Command> getCommandsHistory() {
+        return commandsHistory.clone();
+    }
+
+    /**
+     * save a command in the history
+     * @param command the command to save
+     */
     public void saveCommand(Command command) {
         commandsHistory.push(command);
     }

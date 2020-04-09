@@ -11,8 +11,8 @@ public class CutCommand extends Command {
     @Override
     public void execute() {
         app.saveCommand(this);
-        app.clipboard = app.getActiveEditor().getSelection();
         history.push(app.getActiveEditor().saveSnapshot());
+        app.clipboard = app.getActiveEditor().getSelection();
         System.out.println("Cutting \""+app.clipboard+"\" from "+app.getActiveEditor().getName()+"\n");
         app.getActiveEditor().replaceSelection("");
     }

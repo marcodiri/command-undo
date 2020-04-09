@@ -11,6 +11,10 @@ public class History<T> {
         history = new Stack<>();
     }
 
+    private History(Stack<T> toCopy) {
+        history = (Stack<T>) toCopy.clone();
+    }
+
     public void push(T item) {
         history.push(item);
     }
@@ -21,6 +25,15 @@ public class History<T> {
         } catch(EmptyStackException e) {
             return null;
         }
+    }
+
+    @Override
+    public History<T> clone() {
+        return new History<T>(history);
+    }
+
+    public int size() {
+        return history.size();
     }
 
 }
