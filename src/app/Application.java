@@ -11,15 +11,15 @@ import history.History;
 
 public class Application {
 
-    private Map<String, Component> controls;
-    private Map<String, Editor> editors;
+    private Map<Integer, Component> components;
+    private Map<String, Integer> nameToId; // just a helper to call the component by name in the client
     private Editor activeEditor;
     private History<Command> commandsHistory;
     public String clipboard;
 
     public Application() {
-        controls = new HashMap<String, Component>();
-        editors = new HashMap<>();
+        components = new HashMap<>();
+        nameToId = new HashMap<>();
         commandsHistory = new History<>();
         generateUI();
     }
@@ -29,31 +29,59 @@ public class Application {
         Command pasteCmd = new PasteCommand(this);
         Command cutCmd = new CutCommand(this);
         Command undoCmd = new UndoCommand(this);
+        Command newEditorCmd = new NewEditorCommand(this);
 
         // create the buttons
-        controls.put("CopyButton", new Button("Copy Button", copyCmd));
-        controls.put("PasteButton", new Button("Paste Button", pasteCmd));
-        controls.put("CutButton", new Button("Cut Button", cutCmd));
-        controls.put("UndoButton", new Button("Undo Button", undoCmd));
+        createComponent("button", "CopyButton", copyCmd);
+        createComponent("button", "PasteButton", pasteCmd);
+        createComponent("button", "CutButton", cutCmd);
+        createComponent("button", "UndoButton", undoCmd);
+        createComponent("button", "NewEditorButton", newEditorCmd);
 
         // create the shortcuts
-        controls.put("Ctrl+C", new Shortcut("Copy", copyCmd));
-        controls.put("Ctrl+V", new Shortcut("Paste", pasteCmd));
-        controls.put("Ctrl+X", new Shortcut("Cut", cutCmd));
-        controls.put("Ctrl+Z", new Shortcut("Undo", undoCmd));
+        createComponent("shortcut", "Ctrl+C", copyCmd);
+        createComponent("shortcut", "Ctrl+V", pasteCmd);
+        createComponent("shortcut", "Ctrl+X", cutCmd);
+        createComponent("shortcut", "Ctrl+Z", undoCmd);
+        createComponent("shortcut", "Ctrl+N", newEditorCmd);
     }
 
     /**
-     * Create a new {@link Editor} and set it as the {@code activeEditor}
-     * @param name the name of the new {@link Editor}
-     * @return the new {@link Editor}
+     * Create a new {@link Component}.<p>
+     *  and set it as the {@code activeEditor}
+     * @param type one of "button", "shortcut", "macro" or "editor"
+     * @param name the name of the new {@link Component}
+     * @param command the {@link Command} to bind to the component
      */
-    public Editor createEditor(String name) {
-        Editor newEditor = new Editor(this, name, null);
-        editors.put(name, newEditor);
-        System.out.println("Created "+name);
-        setActiveEditor(newEditor);
-        return newEditor;
+    public void createComponent(String type, String name, Command command) {
+        Component component;
+        switch(type) {
+            case "shortcut":
+                component = new Shortcut(name, command);
+                break;
+            case "button":
+                component = new Button(name, command);
+                break;
+            case "editor":
+            default:
+                component = new Editor(this, name, null);
+                System.out.println("Created "+name);
+                components.put(component.getId(), component);
+                setActiveEditor((Editor)component);
+                break;
+        }
+        components.put(component.getId(), component);
+        nameToId.put(name, component.getId());
+    }
+
+    public void click(String compName) {
+        components.get(nameToId.get(compName)).click();
+    }
+
+    public Command createMacro(String shortcut) {
+        Command macro = new MacroCommand(this);
+        createComponent("shortcut", shortcut, macro);
+        return macro;
     }
 
     /**
@@ -76,20 +104,6 @@ public class Application {
         if(toUndo != null) {
             toUndo.undo();
         }
-    }
-
-    /**
-     * @return the control going by the {@code name}
-     */
-    public Component getControl(String name) {
-        return controls.get(name);
-    }
-
-    /**
-     * @return the editor going by the {@code name}
-     */
-    public Editor getEditor(String name) {
-        return editors.get(name);
     }
 
     /**

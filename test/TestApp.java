@@ -1,21 +1,19 @@
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestInstance;
 
 import app.Application;
-import command.CutCommand;
+import command.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestApp {
 
-    private static Application app;
+    private Application app;
 
-    @BeforeClass
-    public static void setUp() {
+    public void setUp() {
         app = new Application();
+        // create a new editor and write into it
+        app.click("NewEditorButton");
+        app.getActiveEditor().setText("Testo di prova");
     }
 
     // helper function
@@ -30,17 +28,15 @@ public class TestApp {
     }
 
     @Test
-    @Order(1)
-	public void testCutCommand() {		
-        // create a new editor and write into it
-        app.createEditor("Editor1").setText("Testo di prova");
+	public void testCutCommand() {
+        setUp();
         printActiveEditorText();
 
         // cut some text from editor1
         // with button
         app.getActiveEditor().setCaretPos(5);
         app.getActiveEditor().setSelectionWidth(3);
-        app.getControl("CutButton").click();
+        app.click("CutButton");
         printActiveEditorText();
 
         assertTrue(app.getCommandsHistory().size() == 1); // the command gets saved into history
@@ -51,7 +47,7 @@ public class TestApp {
         // with shortcut
         app.getActiveEditor().setCaretPos(5);
         app.getActiveEditor().setSelectionWidth(app.getActiveEditor().getText().length()-app.getActiveEditor().getCaretPos());
-        app.getControl("Ctrl+X").click();
+        app.click("Ctrl+X");
         printActiveEditorText();
 
         assertTrue(app.getCommandsHistory().size() == 2);
@@ -61,26 +57,43 @@ public class TestApp {
 	}
 
     @Test
-    @Order(2)
     public void testUndoCommand() {
-        if(!printActiveEditorText()) {
-            return;
-        }
+        testCutCommand();
 
         // undo the last command
         // with button
-        app.getControl("UndoButton").click();
+        app.click("UndoButton");
         printActiveEditorText();
 
         assertTrue(app.getCommandsHistory().size() == 1); // the command gets removed from history
         assertEquals("Testo prova", app.getActiveEditor().getText());
         
         // with shortcut
-        app.getControl("Ctrl+Z").click();
+        app.click("Ctrl+Z");
         printActiveEditorText();
 
         assertTrue(app.getCommandsHistory().size() == 0);
         assertEquals("Testo di prova", app.getActiveEditor().getText());
+    }
+
+    @Test
+    public void testMacroCommand() {
+        setUp();
+
+        // create a macro to copy text and paste it on a new editor
+        Command macro = app.createMacro("Ctrl+Shift+X");
+        macro.add(new CutCommand(app));
+        macro.add(new NewEditorCommand(app));
+        macro.add(new PasteCommand(app));
+        
+        app.getActiveEditor().setCaretPos(0);
+        app.getActiveEditor().setSelectionWidth(app.getActiveEditor().getText().length()/2);
+        int editorId = app.getActiveEditor().getId();
+        app.click("Ctrl+Shift+X");
+        printActiveEditorText();
+        assertTrue(app.getCommandsHistory().size() == 2); // both the cut and paste commands have been saved
+        assertTrue(app.getActiveEditor().getId() != editorId); // a new editor has been created by the macro
+        assertEquals("Testo d", app.getActiveEditor().getText()); // the copied text has been pasted onto the new editor
     }
 
 }

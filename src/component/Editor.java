@@ -137,5 +137,4 @@ public class Editor extends Component {
         return new EditorMemento();
     }
 
-
 }

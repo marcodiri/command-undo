@@ -8,7 +8,9 @@ import history.History;
  * Command design pattern.
  * Every {@code concreteCommand} incapsulates a function that can later
  * be attached to different kinds of {@code Component}s like
- * {@code Button}s and {@code Shortcut}s in this example.
+ * {@code Button}s and {@code Shortcut}s in this example.<p>
+ * Acts as the Component of the Composite design pattern to
+ * generate macro commands. {@code concreteCommand}s are the Leafs.
  */
 public abstract class Command {
 
@@ -30,5 +32,13 @@ public abstract class Command {
     public abstract void execute();
 
     public abstract void undo();
+
+    public void add(Command command) throws RuntimeException {
+        throw new RuntimeException("Cannot execute add operation on a non-macro command.");
+    }
+
+    public void remove(Command command) throws RuntimeException {
+        throw new RuntimeException("Cannot execute remove operation on a non-macro command.");
+    }
 
 }
