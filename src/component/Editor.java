@@ -103,7 +103,7 @@ public class Editor extends Component {
         private final String text;
         private final int caretPos, selectionWidth;
 
-        public EditorMemento() {
+        private EditorMemento() {
             timestamp = new Timestamp(System.currentTimeMillis());
             this.text = Editor.this.text;
             this.caretPos = Editor.this.caretPos;
