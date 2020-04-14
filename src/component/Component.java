@@ -37,10 +37,30 @@ public abstract class Component {
     }
 
     /**
+     * @return the command
+     */
+    public Command getCommand() {
+        return command;
+    }
+
+    /**
+     * @param command the command to set
+     */
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    /**
      * behaviour of the Component when clicked
      */
     public void click() {
         command.execute();
     }
+
+    /**
+     * ID will still be different.
+     */
+    @Override
+    public abstract Component clone();
 
 }

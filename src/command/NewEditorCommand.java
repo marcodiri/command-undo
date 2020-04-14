@@ -1,23 +1,35 @@
 package command;
 
-import app.UniqueID;
+import java.util.Stack;
 
 import app.Application;
+import app.UniqueID;
+import component.Editor;
 
 public class NewEditorCommand extends Command {
 
-    public NewEditorCommand(Application app) {
+    private Stack<Editor> created;
+
+    NewEditorCommand(Application app) {
         super(app);
-    }
+        created = new Stack<>();
+    };
 
     @Override
     public void execute() {
-        app.createComponent("editor", "NewEditor-"+UniqueID.getID(), null);
+        app.saveCommand(this);
+        String name = "NewEditor-"+UniqueID.getID();
+        System.out.println("Creating "+name);
+        Editor newEditor = app.createEditor(name);
+        created.push(newEditor); // save the created editor
+        System.out.println(newEditor.toString());
     }
 
     @Override
     public void undo() {
-        // undo code here
+        Editor toRemove = created.pop();
+        System.out.println("\nRemoving "+toRemove.getName());
+        app.removeEditor(toRemove);
     }
 
 }

@@ -4,9 +4,9 @@ import app.Application;
 
 public class CopyCommand extends Command {
 
-    public CopyCommand(Application app) {
+    CopyCommand(Application app) {
         super(app);
-    }
+    };
 
     @Override
     public void execute() {

@@ -11,12 +11,22 @@ public class Editor extends Component {
     private String text;
     private int caretPos, selectionWidth;
 
-    public Editor(Application app, String name, Command command) {
+    // package private to be instantiated by the factory
+    Editor(Application app, String name, Command command) {
         super(name, command);
         this.app = app;
         text = "";
         caretPos = 0;
         selectionWidth = 0;
+    }
+
+    @Override
+    public Editor clone() {
+        Editor newEditor = new Editor(app, getName(), getCommand());
+        newEditor.text = this.text;
+        newEditor.caretPos = this.caretPos;
+        newEditor.selectionWidth = this.selectionWidth;
+        return newEditor;
     }
 
     @Override
@@ -35,6 +45,8 @@ public class Editor extends Component {
         this.text = text;
         setCaretPos(this.text.length()); // move the caret at the end of the text
         setSelectionWidth(0);
+        System.out.print(toString());
+        System.out.println(" <- Text set on "+getName()+": \""+text+"\"\n");
     }
 
     public String getSelection() {
@@ -88,6 +100,42 @@ public class Editor extends Component {
             this.selectionWidth = width;
         }
     }
+
+    @Override
+    public String toString() {
+        int length = text.length() > getName().length() ? text.length() : getName().length();
+        StringBuilder builder = new StringBuilder();
+        builder.append(" ");
+        for(int i=0; i<length+2; i++) {
+            builder.append("_");
+        }
+        builder.append(" ");
+        builder.append(System.lineSeparator());
+        builder.append("| "+getName());
+        for(int i=0; i<length-getName().length()+1; i++) {
+            builder.append(" ");
+        }
+        builder.append("|");
+        builder.append(System.lineSeparator());
+        builder.append("|");
+        for(int i=0; i<length+2; i++) {
+            builder.append("‾");
+        }
+        builder.append("|");
+        builder.append(System.lineSeparator());
+        builder.append("| "+text);
+        for(int i=0; i<length-text.length()+1; i++) {
+            builder.append(" ");
+        }
+        builder.append("|");
+        builder.append(System.lineSeparator());
+        builder.append("|");
+        for(int i=0; i<length+2; i++) {
+            builder.append("_");
+        }
+        builder.append("|");
+        return builder.toString();
+    }
     
     /**
      * Implements the Memento design pattern.<p>
@@ -126,6 +174,7 @@ public class Editor extends Component {
             Editor.this.caretPos = this.caretPos;
             Editor.this.selectionWidth = this.selectionWidth;
             System.out.println("Restored "+Editor.this.getName()+" with text: \""+this.text+"\"");
+            System.out.println(Editor.this.toString());
         }
 
     }

@@ -4,8 +4,13 @@ import command.Command;
 
 public class Button extends Component {
 
-    public Button(String name, Command command) {
+    Button(String name, Command command) {
         super(name, command);
+    }
+
+    @Override
+    public Button clone() {
+        return new Button(getName(), getCommand());
     }
 
 }

@@ -4,9 +4,9 @@ import app.Application;
 
 public class UndoCommand extends Command {
 
-    public UndoCommand(Application app) {
+    UndoCommand(Application app) {
         super(app);
-    }
+    };
 
     @Override
     public void execute() {

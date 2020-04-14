@@ -4,8 +4,13 @@ import command.Command;
 
 public class Shortcut extends Component {
 
-    public Shortcut(String name, Command command) {
+    Shortcut(String name, Command command) {
         super(name, command);
+    }
+
+    @Override
+    public Shortcut clone() {
+        return new Shortcut(getName(), getCommand());
     }
 
 }

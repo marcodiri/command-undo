@@ -4,9 +4,9 @@ import app.Application;
 
 public class PasteCommand extends Command {
 
-    public PasteCommand(Application app) {
+    PasteCommand(Application app) {
         super(app);
-    }
+    };
 
     @Override
     public void execute() {
@@ -20,7 +20,7 @@ public class PasteCommand extends Command {
 
     @Override
     public void undo() {
-        System.out.println("Undoing pasting");
+        System.out.println("\nUndoing pasting");
         history.pop().restore();
     }
 
