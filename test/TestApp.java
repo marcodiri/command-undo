@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import app.Application;
 import command.*;
+import component.Editor.EditorMemento;
 
 public class TestApp {
 
@@ -15,7 +16,6 @@ public class TestApp {
         app = new Application();
     }
 
-    // TODO: add in the test: get Memento list and see if it has been saved
     @Test
     public void testNewEditorCommand() {
         // create a new editor and write into it
@@ -46,6 +46,8 @@ public class TestApp {
 
         assertTrue(app.getCommandsHistory().size() == 2); // the command gets saved into history
         assertTrue(app.getCommandsHistory().pop() instanceof CutCommand); // pop() does not change app state cause getCommandHistory() returns a copy
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().size() == 1);
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().pop() instanceof EditorMemento);
         assertEquals(" di", app.clipboard);
         assertEquals("Testo prova", app.getActiveEditor().getText());
         
@@ -56,6 +58,8 @@ public class TestApp {
 
         assertTrue(app.getCommandsHistory().size() == 3);
         assertTrue(app.getCommandsHistory().pop() instanceof CutCommand);
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().size() == 2);
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().pop() instanceof EditorMemento);
         assertEquals(" prova", app.clipboard);
         assertEquals("Testo", app.getActiveEditor().getText());
 	}
@@ -77,6 +81,11 @@ public class TestApp {
         app.click("Ctrl+Shift+X");
 
         assertTrue(app.getCommandsHistory().size() == 5); // initial NewEditorCommand + the 3 commands in the macro + the macro itself
+        // both CUT and PASTE commands request a snapshot to Editor
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().size() == 1);
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().pop() instanceof EditorMemento);
+        assertTrue(app.getCommand(CommandManager.Type.PASTE).getHistory().size() == 1);
+        assertTrue(app.getCommand(CommandManager.Type.PASTE).getHistory().pop() instanceof EditorMemento);
         assertEquals("Testo d", app.clipboard); // the selected text has been cut from the active editor
         assertTrue(app.getActiveEditor().getId() != editorId); // a new editor has been created by the macro
         assertEquals("Testo d", app.getActiveEditor().getText()); // the copied text has been pasted onto the new editor
@@ -90,6 +99,9 @@ public class TestApp {
         app.click("UndoButton");
 
         assertTrue(app.getCommandsHistory().size() == 1); // the commands get removed from history
+        // both CUT and PASTE commands get reverted
+        assertTrue(app.getCommand(CommandManager.Type.CUT).getHistory().size() == 0);
+        assertTrue(app.getCommand(CommandManager.Type.PASTE).getHistory().size() == 0);
         assertEquals("Testo di prova", app.getActiveEditor().getText());
     }
 

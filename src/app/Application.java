@@ -84,6 +84,7 @@ public class Application {
     }
 
     /**
+     * Just for testing sake.
      * @return the commandsHistory
      */
     public History<Command> getCommandsHistory() {

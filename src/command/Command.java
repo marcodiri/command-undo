@@ -41,4 +41,12 @@ public abstract class Command {
         throw new RuntimeException("Cannot execute remove operation on a non-macro command.");
     }
 
+    /**
+     * Just for testing sake.
+     * @return the history
+     */
+    public History<EditorMemento> getHistory() {
+        return history.clone();
+    }
+
 }
