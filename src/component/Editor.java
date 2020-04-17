@@ -2,19 +2,16 @@ package component;
 
 import java.sql.Timestamp;
 
-import app.Application;
-import command.Command;
-
 public class Editor extends Component {
 
-    private Application app;
+    private Window window;
     private String text;
     private int caretPos, selectionWidth;
 
     // package private to be instantiated by the factory
-    Editor(Application app, String name, Command command) {
-        super(name, command);
-        this.app = app;
+    Editor(String name, Window window) {
+        super(name);
+        this.window = window;
         text = "";
         caretPos = 0;
         selectionWidth = 0;
@@ -22,7 +19,7 @@ public class Editor extends Component {
 
     @Override
     public Editor clone() {
-        Editor newEditor = new Editor(app, getName(), getCommand());
+        Editor newEditor = new Editor(getName(), window);
         newEditor.text = this.text;
         newEditor.caretPos = this.caretPos;
         newEditor.selectionWidth = this.selectionWidth;
@@ -31,7 +28,7 @@ public class Editor extends Component {
 
     @Override
     public void click() {
-        app.setActiveEditor(this);
+        window.setActiveEditor(this);
     }
 
     public String getText() {
@@ -43,19 +40,27 @@ public class Editor extends Component {
      */
     public void setText(String text) {
         this.text = text;
-        setCaretPos(this.text.length()); // move the caret at the end of the text
-        setSelectionWidth(0);
+        setCaretPos(-1); // move the caret at the end of the text
+        setSelectionWidth(0, true);
         System.out.print(toString());
         System.out.println(" <- Text set on "+getName()+": \""+text+"\"\n");
     }
 
     public String getSelection() {
-        return text.substring(caretPos, caretPos + selectionWidth);
+        if(caretPos + selectionWidth > caretPos) {
+            return text.substring(caretPos, caretPos + selectionWidth);
+        } else {
+            return text.substring(caretPos + selectionWidth, caretPos);
+        }
     }
 
     public void replaceSelection(String replacement) {
         StringBuilder builder = new StringBuilder(text);
-        builder.replace(caretPos, caretPos + selectionWidth, replacement);
+        if(caretPos + selectionWidth > caretPos) {
+            builder.replace(caretPos, caretPos + selectionWidth, replacement);
+        } else {
+            builder.replace(caretPos + selectionWidth, caretPos, replacement);
+        }
         int newCaretPos = caretPos + replacement.length(); // move caret at the end of the pasted text
         setText(builder.toString());
         setCaretPos(newCaretPos);;
@@ -70,11 +75,15 @@ public class Editor extends Component {
 
     /**
      * Set the editor caret position.
-     * @param pos the caret position to be set. Must be non-negative and cannot exceed the text length.
+     * @param pos the caret position to be set.
+     * Must be greater than or equal to {@code -1} and cannot exceed the text length.
+     * {@code -1} corresponds to the end of the text
      */
     public void setCaretPos(int pos) throws RuntimeException {
-        if(pos > text.length() || pos < 0) {
+        if(pos > text.length() || pos < -1) {
             throw new RuntimeException("Cannot set the sursor position out of the text");
+        } else if(pos == -1) {
+            this.caretPos = this.text.length();
         } else {
             this.caretPos = pos;
         }
@@ -90,14 +99,27 @@ public class Editor extends Component {
     /**
      * Set the editor selection width.
      * @param width the width of the selection to be set.
+     * Must be greater than or equal to {@code -1}.
      * If positive it cannot exceed the {@code text.length() - caretPos},
-     * if negative {@code caretPos - selectionWidth} cannot be less than {@code 0}.
+     * if {@code -1} the text from caret to the end will be selected.
+     * @param toRight {@code true} if the selection is from caret to right.
+     * {@code false} if the selection is from caret to left.
      */
-    public void setSelectionWidth(int width) throws RuntimeException {
-        if(width > text.length() - caretPos || caretPos + width < 0) {
+    public void setSelectionWidth(int width, boolean toRight) throws RuntimeException {
+        if(width < -1 || (toRight && width > text.length() - caretPos) || (!toRight && caretPos - width < 0)) {
             throw new RuntimeException("Selection out of the text");
+        } else if(width == -1) {
+            if(toRight) {
+                this.selectionWidth = text.length() - caretPos;
+            } else {
+                this.selectionWidth = -caretPos;
+            }
         } else {
-            this.selectionWidth = width;
+            if(toRight) {
+                this.selectionWidth = width;
+            } else {
+                this.selectionWidth = -width;
+            }
         }
     }
 
@@ -146,7 +168,8 @@ public class Editor extends Component {
      * This class is immutable.
      * Should be instantiated by the Object itself.
      */
-    public final class EditorMemento {
+    public final class EditorMemento implements Memento {
+
         private final Timestamp timestamp;
         private final String text;
         private final int caretPos, selectionWidth;
@@ -180,9 +203,9 @@ public class Editor extends Component {
     }
 
     /**
-     * @return a {@code Memento} with the current state of the {@link Drawable} object.
+     * @return a {@link Memento} with the current state of the {@link Editor} object.
      */
-    public EditorMemento saveSnapshot() {
+    public EditorMemento getSnapshot() {
         return new EditorMemento();
     }
 

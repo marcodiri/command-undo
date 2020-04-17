@@ -1,26 +1,13 @@
 package command;
 
-import app.Application;
-
 public class CutCommand extends Command {
-
-    CutCommand(Application app) {
-        super(app);
-    };
 
     @Override
     public void execute() {
-        app.saveCommand(this);
-        history.push(app.getActiveEditor().saveSnapshot());
-        app.clipboard = app.getActiveEditor().getSelection();
-        System.out.println("Cutting \""+app.clipboard+"\" from "+app.getActiveEditor().getName());
-        app.getActiveEditor().replaceSelection("");
-    }
-
-    @Override
-    public void undo() {
-        System.out.println("\nUndoing cutting");
-        history.pop().restore();
+        activeWindow.storeSnapshot(activeWindow.getActiveEditor().getSnapshot()); // save an EditorMemento and store it in the caretaker
+        activeWindow.clipboard = activeWindow.getActiveEditor().getSelection();
+        System.out.println("Cutting \""+activeWindow.clipboard+"\" from "+activeWindow.getActiveEditor().getName());
+        activeWindow.getActiveEditor().replaceSelection("");
     }
 
 }

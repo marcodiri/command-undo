@@ -1,16 +1,21 @@
 package component;
 
-import command.Command;
-
 public class Button extends Component {
 
-    Button(String name, Command command) {
-        super(name, command);
+    Button(String name) {
+        super(name);
+    }
+
+    @Override
+    public void click() {
+        getCommand().execute();
     }
 
     @Override
     public Button clone() {
-        return new Button(getName(), getCommand());
+        Button newButton = new Button(getName());
+        newButton.setCommand(getCommand()); // FIXME: if we don't clone the command the ComponentMemento will be mutable, do we care?
+        return newButton;
     }
 
 }

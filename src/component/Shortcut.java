@@ -1,16 +1,21 @@
 package component;
 
-import command.Command;
-
 public class Shortcut extends Component {
 
-    Shortcut(String name, Command command) {
-        super(name, command);
+    Shortcut(String name) {
+        super(name);
+    }
+
+    @Override
+    public void click() {
+        getCommand().execute();
     }
 
     @Override
     public Shortcut clone() {
-        return new Shortcut(getName(), getCommand());
+        Shortcut newShortcut = new Shortcut(getName());
+        newShortcut.setCommand(getCommand());
+        return newShortcut;
     }
 
 }

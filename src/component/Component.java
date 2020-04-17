@@ -9,10 +9,9 @@ public abstract class Component {
     private String name;
     private Command command;
 
-    Component(String name, Command command) {
+    Component(String name) {
         id = UniqueID.generateID();
         this.name = name;
-        this.command = command;
     }
 
     /**
@@ -53,14 +52,12 @@ public abstract class Component {
     /**
      * behaviour of the Component when clicked
      */
-    public void click() {
-        command.execute();
-    }
+    public abstract void click();
 
     /**
      * ID will still be different.
      */
     @Override
-    public abstract Component clone();
+    protected abstract Component clone() throws CloneNotSupportedException;
 
 }

@@ -1,8 +1,6 @@
 package command;
 
-import app.Application;
-import component.Editor.EditorMemento;
-import history.History;
+import component.*;
 
 /**
  * Command design pattern.
@@ -14,24 +12,16 @@ import history.History;
  */
 public abstract class Command {
 
-    protected Application app;
-
-    // probably better to put the history in the Editor directly, done like this
-    // for the sake of demonstrating the Memento pattern with an external caretaker
-    protected History<EditorMemento> history;
-
-    protected Command(Application app) {
-        this.app = app;
-        history = new History<>();
-    }
+    // Command has to know the receiver, but since our receiver is dynamic
+    // either we do this static, or we put setActiveWindow() in the
+    // CommandManager and pass the activeWindow reference in the Command constructor
+    protected static Window activeWindow;
 
     /**
-     * Execute the command on an editor. If undoable save an {@link EditorMemento} in {@link Command.history}
-     * @return {@code true} if the command is undoable, {@code false} otherwise
+     * Execute the command. If undoable saves a {@code Memento} of the
+     * modified object in the caretaker.
      */
     public abstract void execute();
-
-    public abstract void undo();
 
     public void add(Command command) throws RuntimeException {
         throw new RuntimeException("Cannot execute add operation on a non-macro command.");
@@ -41,12 +31,8 @@ public abstract class Command {
         throw new RuntimeException("Cannot execute remove operation on a non-macro command.");
     }
 
-    /**
-     * Just for testing sake.
-     * @return the history
-     */
-    public History<EditorMemento> getHistory() {
-        return history.clone();
+    public static void setActiveWindow(Window win) {
+        activeWindow = win;
     }
 
 }
