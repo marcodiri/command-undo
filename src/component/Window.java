@@ -9,7 +9,6 @@ import history.History;
 public class Window extends Component {
 
     private ComponentManager compMng;
-    private CommandManager commMng;
     public String clipboard;
     private Editor activeEditor;
 
@@ -18,32 +17,25 @@ public class Window extends Component {
 
     public Window(String name, CommandManager commMng) {
         super(name);
-        compMng = new ComponentManager(this);
-        this.commMng = commMng;
+        compMng = new ComponentManager(this, commMng);
         history = new History<>();
         generateUI();
     }
 
     private void generateUI() {
-        Command copyCmd = commMng.get(CommandManager.Type.COPY);
-        Command pasteCmd = commMng.get(CommandManager.Type.PASTE);
-        Command cutCmd = commMng.get(CommandManager.Type.CUT);
-        Command undoCmd = commMng.get(CommandManager.Type.UNDO);
-        Command newEditorCmd = commMng.get(CommandManager.Type.NEWEDITOR);
-
         // create the buttons
-        compMng.create(ComponentManager.Type.BUTTON, "CopyButton", copyCmd);
-        compMng.create(ComponentManager.Type.BUTTON, "PasteButton", pasteCmd);
-        compMng.create(ComponentManager.Type.BUTTON, "CutButton", cutCmd);
-        compMng.create(ComponentManager.Type.BUTTON, "UndoButton", undoCmd);
-        compMng.create(ComponentManager.Type.BUTTON, "NewEditorButton", newEditorCmd);
+        compMng.create(ComponentManager.Type.BUTTON, "CopyButton", CommandManager.Type.COPY);
+        compMng.create(ComponentManager.Type.BUTTON, "PasteButton", CommandManager.Type.PASTE);
+        compMng.create(ComponentManager.Type.BUTTON, "CutButton", CommandManager.Type.CUT);
+        compMng.create(ComponentManager.Type.BUTTON, "UndoButton", CommandManager.Type.UNDO);
+        compMng.create(ComponentManager.Type.BUTTON, "NewEditorButton", CommandManager.Type.NEWEDITOR);
 
         // create the shortcuts
-        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+C", copyCmd);
-        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+V", pasteCmd);
-        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+X", cutCmd);
-        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+Z", undoCmd);
-        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+N", newEditorCmd);
+        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+C", CommandManager.Type.COPY);
+        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+V", CommandManager.Type.PASTE);
+        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+X", CommandManager.Type.CUT);
+        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+Z", CommandManager.Type.UNDO);
+        compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+N", CommandManager.Type.NEWEDITOR);
     }
 
     @Override
@@ -66,7 +58,7 @@ public class Window extends Component {
      * @return the new {@code Editor}
      */
     public void createEditor(String name) {
-        Editor newEditor = (Editor)compMng.create(ComponentManager.Type.EDITOR, name, null);
+        Editor newEditor = (Editor)compMng.create(ComponentManager.Type.EDITOR, name, CommandManager.Type.NULL);
         setActiveEditor(newEditor);
         System.out.println(newEditor.toString());
     }
@@ -83,21 +75,11 @@ public class Window extends Component {
     /**
      * Create a custom shortcut and bind a commmand to it.
      * @param name the name to be assigned to the shortcut
-     * @param command the command triggered by the shortcut
+     * @param commandName the command triggered by the shortcut,
+     * either a {@link CommandManager.Type} or a macro name
      */
-    public void createShortcut(String name, Command command) {
-        compMng.create(ComponentManager.Type.SHORTCUT, name, command);
-    }
-
-    /**
-     * Create a macro command that can be attached to a shortcut created
-     * with {@link #createShortcut(String, Command)}.
-     * @param name the macro identifier
-     * @return a {@code Command} object on which you can call {@code add}
-     * method to edit the macro
-     */
-    public Command createMacro(String name) {
-        return commMng.createMacro(name);
+    public void createShortcut(String name, String commandName) {
+        compMng.create(ComponentManager.Type.SHORTCUT, name, commandName);
     }
 
     /**
@@ -128,14 +110,6 @@ public class Window extends Component {
     public void setActiveEditor(Editor editor) {
         this.activeEditor = editor;
         System.out.println("Active editor: "+editor.getName());
-    }
-
-    /**
-     * Just for testing sake.
-     * @return the history
-     */
-    public History<Memento> getHistory() {
-        return history.clone();
     }
 
 }

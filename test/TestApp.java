@@ -57,7 +57,7 @@ public class TestApp {
 
     @Test
     public void testCommandPatern() {
-
+        
         // different components have the same command
         Component newEditorButton = components.get(nameToId.get("NewEditorButton"));
         Component newEditorShortcut = components.get(nameToId.get("Ctrl+N"));
@@ -155,7 +155,7 @@ public class TestApp {
 
         assertTrue(commMng.get("Cut and Paste on New Editor") instanceof MacroCommand); // a new MacroCommand has been created
 
-        app.createShortcut("Ctrl+Shift+X", macro); // attach macro to custom shortcut
+        app.createShortcut("Ctrl+Shift+X", "Cut and Paste on New Editor"); // attach macro to custom shortcut
         
         app.selectText(0, 7, true);
         int oldEditorId = activeWindow.getActiveEditor().getId(); // to test if activeEditor has in fact changed
@@ -187,7 +187,7 @@ public class TestApp {
         app.write("Prova editor in nuova finestra");
 
         // attach macro to a custom shortcut in the new window without creating it again
-        app.createShortcut("Ctrl+Shift+V", app.getCommand("Cut and Paste on New Editor"));
+        app.createShortcut("Ctrl+Shift+V", "Cut and Paste on New Editor");
 
         app.selectText(0, 12, true);
         app.click("Ctrl+Shift+V");

@@ -80,10 +80,11 @@ public class AppFacade {
     /**
      * Create a custom shortcut and bind a commmand to it.
      * @param name the name to be assigned to the shortcut
-     * @param command the command triggered by the shortcut
+     * @param commandName the command triggered by the shortcut,
+     * either a {@link CommandManager.Type} or a macro name
      */
-    public void createShortcut(String name, Command command) {
-        activeWindow.createShortcut(name, command);
+    public void createShortcut(String name, String commandName) {
+        activeWindow.createShortcut(name, commandName);
     }
 
     /**
@@ -94,7 +95,7 @@ public class AppFacade {
      * method to edit the macro
      */
     public Command createMacro(String name) {
-        return activeWindow.createMacro(name);
+        return commMng.createMacro(name);
     }
 
 }

@@ -3,7 +3,7 @@ package component;
 import java.util.HashMap;
 import java.util.Map;
 
-import command.Command;
+import command.CommandManager;
 
 public class ComponentManager {
 
@@ -14,12 +14,14 @@ public class ComponentManager {
     }
 
     private Window window;
+    private CommandManager commMng;
     private Map<Type, Component> prototypes;
     private Map<Integer, Component> components;
     private Map<String, Integer> nameToId; // just a helper to call the component by name in the client for testing purpose
 
-    ComponentManager(Window window) {
+    ComponentManager(Window window, CommandManager commMng) {
         this.window = window;
+        this.commMng = commMng;
         components = new HashMap<>();
         nameToId = new HashMap<>();
     }
@@ -31,11 +33,12 @@ public class ComponentManager {
      * @param app the application you are working on
      * @param type on of {@link Type}
      * @param name the name to assign to the component
-     * @param command the command to run on the component click
+     * @param commandName the command to run on the component click,
+     * either a {@link CommandManager.Type} or a macro name
      * (always {@code null} for a {@code Type.EDITOR})
      * @return the created {@link Component}
      */
-    public Component create(Type type, String name, Command command) {
+    public Component create(Type type, String name, String commandName) {
         // lazy load the prototypes
         if(prototypes == null) {
             prototypes = new HashMap<>();
@@ -43,19 +46,24 @@ public class ComponentManager {
             prototypes.put(Type.SHORTCUT, new Shortcut(null));
             prototypes.put(Type.EDITOR, new Editor(null, window));
         }
-        // RIP: remove IF with Prototype
+        // RIP: Remove IF with Prototype
         // instead of having a switch(type), just prototype every component and pass a clone
         Component component = null;
         try {
             component = prototypes.get(type).clone();
             component.setName(name);
-            component.setCommand(command);
+            component.setCommand(commMng.get(commandName));
             components.put(component.getId(), component);
             nameToId.put(component.getName(), component.getId());
         } catch(CloneNotSupportedException e) {
             System.out.println(e.getMessage());
         }
         return component;
+    }
+
+    // overload to accept a CommandManager.Type
+    public Component create(Type type, String name, CommandManager.Type commandName) {
+        return create(type, name, commandName.toString());
     }
 
     /* public void remove(Component component) {
