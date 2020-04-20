@@ -10,7 +10,7 @@ import app.AppFacade;
 import command.*;
 import component.*;
 import component.Editor.EditorMemento;
-import history.History;
+import history.*;
 
 public class TestApp {
 
@@ -167,7 +167,7 @@ public class TestApp {
         assertTrue(clone.pop() instanceof EditorMemento);
         assertTrue(clone.pop() instanceof EditorMemento);
         assertEquals("Testo d", activeWindow.clipboard); // the selected text has been cut from the active editor
-        assertTrue(activeWindow.getActiveEditor().getId() != oldEditorId); // a new editor has been created by the macro
+        assertTrue(activeWindow.getActiveEditor().getId() > oldEditorId); // a new editor has been created by the macro
         assertEquals("Testo d", activeWindow.getActiveEditor().getText()); // the copied text has been pasted onto the new editor
     }
 
@@ -181,7 +181,7 @@ public class TestApp {
             activeWindow = (Window)aw.get(app);
         } catch (IllegalAccessException e) {}
 
-        assertTrue(activeWindow.getId() != oldWindowId);
+        assertTrue(activeWindow.getId() > oldWindowId);
 
         app.click("NewEditorButton");
         app.write("Prova editor in nuova finestra");

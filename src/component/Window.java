@@ -1,10 +1,11 @@
 package component;
 
 import command.*;
-import history.History;
+import history.*;
 
 /**
- * Singleton.
+ * The {@code Receiver} of the Command pattern.<p>
+ * The {@code Caretaker} of the Memento pattern.
  */
 public class Window extends Component {
 
@@ -48,6 +49,11 @@ public class Window extends Component {
         return;
     }
 
+    /**
+     * A fake method to simulate the click on a UI component of this window.
+     * Invokes the click() handler of the component.
+     * @param compName the name of the component to be clicked.
+     */
     public void click(String compName) {
         compMng.get(compName).click();
     }

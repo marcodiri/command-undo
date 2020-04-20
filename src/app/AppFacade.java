@@ -7,6 +7,11 @@ import command.Command;
 import command.CommandManager;
 import component.*;
 
+/**
+ * {@code Facade} for the client.
+ * It exposes all the useful methods to use the application without
+ * the client having to know the underlying architecture.
+ */
 public class AppFacade {
 
     private List<Window> windows;
@@ -38,7 +43,11 @@ public class AppFacade {
         });
     }
 
-    // helper to click a component of the activeWindow
+    /**
+     * A fake method to simulate the click on a UI component of the {@link #activeWindow}.
+     * Invokes the click() handler of the component.
+     * @param compName the name of the component to be clicked.
+     */
     public void click(String compName) {
         activeWindow.click(compName);
     }

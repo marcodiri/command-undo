@@ -3,6 +3,9 @@ package command;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Responsible of instantiating {@link Command}s and passing them on request.
+ */
 public class CommandManager {
 
     public enum Type {

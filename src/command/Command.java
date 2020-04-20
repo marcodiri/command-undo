@@ -7,8 +7,8 @@ import component.*;
  * Every {@code concreteCommand} incapsulates a function that can later
  * be attached to different kinds of {@code Component}s like
  * {@code Button}s and {@code Shortcut}s in this example.<p>
- * Acts as the Component of the Composite design pattern to
- * generate macro commands. {@code concreteCommand}s are the Leafs.
+ * It acts as the {@code Component} of the Composite design pattern to
+ * generate macro commands. {@code concreteCommand}s are the {@code Leaf}s.
  */
 public abstract class Command {
 

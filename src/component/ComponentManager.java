@@ -5,6 +5,11 @@ import java.util.Map;
 
 import command.CommandManager;
 
+/**
+ * Responsible of instantiating {@link Component}s on behalf of {@link Window}
+ * and manage their lifecycle.
+ * It dialogs with {@link CommandManager} to fetch the commands to attach to components.
+ */
 public class ComponentManager {
 
     public enum Type {
@@ -13,7 +18,12 @@ public class ComponentManager {
         EDITOR
     }
 
-    private Window window;
+    private Window window; /** FIXME: this looks awkward, only needed by EDITOR to set itself as the activeEditor in the click handler.
+    I would like to make a command SetActiveEditor to attach to the Editor click(), but Command pattern does not
+    accept parameters in the execute() so Editor has no way to pass itself and make the Command responsible of
+    calling activeWindow.setActiveEditor(editor). There are also no ways for the Command to get this information
+    via other routes.
+     */
     private CommandManager commMng;
     private Map<Type, Component> prototypes;
     private Map<Integer, Component> components;
