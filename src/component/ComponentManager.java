@@ -45,7 +45,7 @@ public class ComponentManager {
      * @param name the name to assign to the component
      * @param commandName the command to run on the component click,
      * either a {@link CommandManager.Type} or a macro name
-     * (always {@code null} for a {@code Type.EDITOR})
+     * (always {@code CommandManager.Type.NULL} for a {@code Type.EDITOR})
      * @return the created {@link Component}
      */
     public Component create(Type type, String name, String commandName) {
@@ -56,7 +56,7 @@ public class ComponentManager {
             prototypes.put(Type.SHORTCUT, new Shortcut(null));
             prototypes.put(Type.EDITOR, new Editor(null, window));
         }
-        // RIP: Remove IF with Prototype
+        // Replace conditional with Prototype
         // instead of having a switch(type), just prototype every component and pass a clone
         Component component = null;
         try {
@@ -81,6 +81,9 @@ public class ComponentManager {
         nameToId.remove(components.remove(component.getId()).getName());
     } */
 
+    /**
+     * only necessary for the fake {@link Window#click(String)} method.
+     */
     public Component get(String name) {
         return components.get(nameToId.get(name));
     }

@@ -1,0 +1,28 @@
+Set active window to: Window-0
+Creating NewEditor-14
+Active editor: NewEditor-14
+ ______________ 
+| NewEditor-14 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+|              |
+|______________|
+ ________________ 
+| NewEditor-14   |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| Testo di prova |
+|________________| <- Text set on NewEditor-14: "Testo di prova"
+
+Creating NewEditor-15
+Active editor: NewEditor-15
+ ______________ 
+| NewEditor-15 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+|              |
+|______________|
+
+
+ _________________________ 
+| NewEditor-15            |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| Un altro testo di prova |
+|_________________________| <- Text set on NewEditor-15: "Un altro testo di prova"

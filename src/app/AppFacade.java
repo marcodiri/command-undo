@@ -3,8 +3,7 @@ package app;
 import java.util.ArrayList;
 import java.util.List;
 
-import command.Command;
-import command.CommandManager;
+import command.*;
 import component.*;
 
 /**
@@ -44,7 +43,7 @@ public class AppFacade {
     }
 
     /**
-     * A fake method to simulate the click on a UI component of the {@link #activeWindow}.
+     * A fake method to simulate the click on a GUI component of the {@link #activeWindow}.
      * Invokes the click() handler of the component.
      * @param compName the name of the component to be clicked.
      */

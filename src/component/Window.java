@@ -1,5 +1,6 @@
 package component;
 
+import app.UniqueID;
 import command.*;
 import history.*;
 
@@ -7,17 +8,20 @@ import history.*;
  * The {@code Receiver} of the Command pattern.<p>
  * The {@code Caretaker} of the Memento pattern.
  */
-public class Window extends Component {
+public class Window {
 
+    private final int id;
+    private String name;
     private ComponentManager compMng;
     public String clipboard;
     private Editor activeEditor;
 
     // Window is the external caretaker of the Mementos' history
-    protected History<Memento> history;
+    private History<Memento> history;
 
     public Window(String name, CommandManager commMng) {
-        super(name);
+        id = UniqueID.generateID();
+        this.name = name;
         compMng = new ComponentManager(this, commMng);
         history = new History<>();
         generateUI();
@@ -39,18 +43,29 @@ public class Window extends Component {
         compMng.create(ComponentManager.Type.SHORTCUT, "Ctrl+N", CommandManager.Type.NEWEDITOR);
     }
 
-    @Override
-    public Window clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException("Window not clonable");
-    }
-
-    @Override
-    public void click() {
-        return;
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
     }
 
     /**
-     * A fake method to simulate the click on a UI component of this window.
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * A fake method to simulate the click on a GUI component of this window.
      * Invokes the click() handler of the component.
      * @param compName the name of the component to be clicked.
      */

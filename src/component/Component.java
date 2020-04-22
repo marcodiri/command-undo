@@ -3,7 +3,7 @@ package component;
 import app.UniqueID;
 import command.Command;
 
-public abstract class Component {
+public abstract class Component implements Cloneable {
 
     private final int id;
     private String name;
@@ -31,6 +31,7 @@ public abstract class Component {
     /**
      * @param name the name to set
      */
+    // FIXME: changing the name of the component doesn't change the key in ComponentManager.nameToId
     public void setName(String name) {
         this.name = name;
     }

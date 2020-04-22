@@ -1,0 +1,14 @@
+Undoing last command
+Restored NewEditor-14 with text: "Testo prova"
+ ______________ 
+| NewEditor-14 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| Testo prova  |
+|______________|
+Undoing last command
+Restored NewEditor-14 with text: "Testo di prova"
+ ________________ 
+| NewEditor-14   |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| Testo di prova |
+|________________|

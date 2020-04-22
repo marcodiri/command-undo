@@ -56,7 +56,7 @@ public class TestApp {
     }
 
     @Test
-    public void testCommandPatern() {
+    public void testCommandPattern() {
         
         // different components have the same command
         Component newEditorButton = components.get(nameToId.get("NewEditorButton"));
@@ -69,7 +69,7 @@ public class TestApp {
         Command newEditorShortcutCommand = newEditorShortcut.getCommand();
         
         // both button and shortcut refer to the same command
-        // N.B. the same read as the exact same object (commands objects are shared)
+        // N.B. "the same" read as the exact same object (commands objects are shared)
         assertTrue(newEditorButtonCommand instanceof NewEditorCommand);
         assertTrue(newEditorButtonCommand == newEditorShortcutCommand);
 
@@ -98,6 +98,7 @@ public class TestApp {
 
     @Test
 	public void testCutCommand() {
+
         // create a new editor and write into it
         app.click("NewEditorButton");
         app.write("Testo di prova");
@@ -107,7 +108,7 @@ public class TestApp {
         app.selectText(5, 3, true);
         app.click("CutButton");
 
-        assertTrue(history.size() == 1); // the command gets saved into history
+        assertTrue(history.size() == 1); // the command gets requested a snapshot
         assertTrue(history.clone().pop() instanceof EditorMemento); // clone history to not change app state
         assertEquals(" di", activeWindow.clipboard);
         assertEquals("Testo prova", activeWindow.getActiveEditor().getText());
@@ -120,6 +121,7 @@ public class TestApp {
         assertTrue(history.clone().pop() instanceof EditorMemento);
         assertEquals(" prova", activeWindow.clipboard);
         assertEquals("Testo", activeWindow.getActiveEditor().getText());
+
 	}
 
     @Test
@@ -144,6 +146,7 @@ public class TestApp {
     
     @Test
     public void testMacroCommand() {
+
         app.click("NewEditorButton");
         app.write("Testo di prova");
 
@@ -169,6 +172,7 @@ public class TestApp {
         assertEquals("Testo d", activeWindow.clipboard); // the selected text has been cut from the active editor
         assertTrue(activeWindow.getActiveEditor().getId() > oldEditorId); // a new editor has been created by the macro
         assertEquals("Testo d", activeWindow.getActiveEditor().getText()); // the copied text has been pasted onto the new editor
+        
     }
 
     @Test

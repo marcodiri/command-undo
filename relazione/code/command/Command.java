@@ -1,0 +1,6 @@
+public abstract class Command {
+    protected static Window activeWindow;
+    ...
+    public abstract void execute();
+    ...
+}

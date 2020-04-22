@@ -26,6 +26,7 @@ public class CommandManager {
      * @return a {@link Command} object
      */
     public Command get(String name) {
+        // lazy load the commands
         if(commands == null) {
             commands = new HashMap<>();
             commands.put(Type.COPY.toString(), new CopyCommand());

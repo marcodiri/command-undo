@@ -1,0 +1,36 @@
+Set active window to: Window-0
+Creating NewEditor-14
+Active editor: NewEditor-14
+ ______________ 
+| NewEditor-14 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+|              |
+|______________|
+ ________________ 
+| NewEditor-14   |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| Testo di prova |
+|________________| <- Text set on NewEditor-14: "Testo di prova"
+
+Executing macro "Cut and Paste on New Editor"
+Cutting "Testo d" from NewEditor-14
+ ______________ 
+| NewEditor-14 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| i prova      |
+|______________| <- Text set on NewEditor-14: "i prova"
+
+Creating NewEditor-16
+Active editor: NewEditor-16
+ ______________ 
+| NewEditor-16 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+|              |
+|______________|
+
+Pasting "Testo d" on NewEditor-16
+ ______________ 
+| NewEditor-16 |
+|‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| Testo d      |
+|______________| <- Text set on NewEditor-16: "Testo d"
