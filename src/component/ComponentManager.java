@@ -10,7 +10,7 @@ import command.CommandManager;
  * and manage their lifecycle.
  * It dialogs with {@link CommandManager} to fetch the commands to attach to components.
  */
-public class ComponentManager {
+public final class ComponentManager {
 
     public enum Type {
         BUTTON,
