@@ -13,9 +13,8 @@ import component.*;
 public abstract class Command {
 
     // Command has to know the receiver, but since our receiver is dynamic
-    // either we do this static, or we put activeWindow and setActiveWindow()
-    // in the CommandManager to be called by the Facade and pass
-    // the activeWindow reference in the Command constructor
+    // either we do this static, or we make AppFacade Observable and
+    // Command Observer to be updated whenever the activeWindow changes
     protected static Window activeWindow;
 
     /**

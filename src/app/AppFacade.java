@@ -27,7 +27,6 @@ public class AppFacade {
     public void createWindow() {
         Window newWin = new Window("Window-"+UniqueID.getID(), commMng);
         windows.add(newWin);
-        activeWindow = newWin;
         setActiveWindow(newWin.getName());
     }
 

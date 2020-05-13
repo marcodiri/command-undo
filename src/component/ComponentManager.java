@@ -57,7 +57,8 @@ public final class ComponentManager {
             prototypes.put(Type.EDITOR, new Editor(null, window));
         }
         // Replace conditional with Prototype
-        // instead of having a switch(type), just prototype every component and pass a clone
+        // instead of having a switch(type){case Type.BUTTON: ...; case Type.SHORTCUT: ...}
+        // just prototype every component and pass a clone
         Component component = null;
         try {
             component = prototypes.get(type).clone();
@@ -75,11 +76,6 @@ public final class ComponentManager {
     public Component create(Type type, String name, CommandManager.Type commandName) {
         return create(type, name, commandName.toString());
     }
-
-    /* public void remove(Component component) {
-        // remove from both components and nameToId maps
-        nameToId.remove(components.remove(component.getId()).getName());
-    } */
 
     /**
      * only necessary for the fake {@link Window#click(String)} method.

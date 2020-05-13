@@ -176,6 +176,7 @@ public class Editor extends Component {
         private final String text;
         private final int caretPos, selectionWidth;
 
+        // private so that only Editor can instantiate it
         private EditorMemento() {
             timestamp = new Timestamp(System.currentTimeMillis());
             this.text = Editor.this.text;

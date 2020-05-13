@@ -84,14 +84,14 @@ public class TestApp {
         app.click("NewEditorButton");
         app.write("Testo di prova");
 
-        assertTrue(components.get(activeWindow.getActiveEditor().getId()) == activeWindow.getActiveEditor()); // the created editor gets saved by the CommandManager
+        assertTrue(components.get(activeWindow.getActiveEditor().getId()) == activeWindow.getActiveEditor()); // the created editor gets saved by the ComponentManager
         assertEquals("Testo di prova", activeWindow.getActiveEditor().getText());
 
         // with shortcut
         app.click("Ctrl+N");
         app.write("Un altro testo di prova");
 
-        assertTrue(components.get(activeWindow.getActiveEditor().getId()) == activeWindow.getActiveEditor()); // the created editor gets saved by the CommandManager
+        assertTrue(components.get(activeWindow.getActiveEditor().getId()) == activeWindow.getActiveEditor()); // the created editor gets saved by the ComponentManager
         assertEquals("Un altro testo di prova", activeWindow.getActiveEditor().getText());
 
     }
@@ -108,7 +108,7 @@ public class TestApp {
         app.selectText(5, 3, true);
         app.click("CutButton");
 
-        assertTrue(history.size() == 1); // the command gets requested a snapshot
+        assertTrue(history.size() == 1); // the command requested a snapshot
         assertTrue(history.clone().pop() instanceof EditorMemento); // clone history to not change app state
         assertEquals(" di", activeWindow.clipboard);
         assertEquals("Testo prova", activeWindow.getActiveEditor().getText());
@@ -152,6 +152,7 @@ public class TestApp {
 
         // create a macro to copy text and paste it on a new editor
         Command macro = app.createMacro("Cut and Paste on New Editor");
+        // macro is a Composite so we can add commands to it
         macro.add(app.getCommand(CommandManager.Type.CUT));
         macro.add(app.getCommand(CommandManager.Type.NEWEDITOR));
         macro.add(app.getCommand(CommandManager.Type.PASTE));
@@ -177,6 +178,7 @@ public class TestApp {
 
     @Test
     public void testMacroOnNewWindow() {
+        // See that CommandManager shares commands between Windows
         testMacroCommand();
 
         int oldWindowId = activeWindow.getId(); // to test a new window has been created
