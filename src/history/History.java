@@ -3,7 +3,7 @@ package history;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-public class History<T> {
+public class History<T> implements Cloneable {
     
     private Stack<T> history;
 
