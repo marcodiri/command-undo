@@ -1,6 +1,6 @@
 package command;
 
-public class PasteCommand extends Command {
+public final class PasteCommand extends Command {
 
     @Override
     public void execute() {

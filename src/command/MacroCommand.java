@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Acts as the {@code Composite} of the Composite pattern
  */
-public class MacroCommand extends Command {
+public final class MacroCommand extends Command {
 
     private String name;
     private List<Command> macro;

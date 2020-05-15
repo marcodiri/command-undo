@@ -1,6 +1,6 @@
 package command;
 
-public class CopyCommand extends Command {
+public final class CopyCommand extends Command {
 
     @Override
     public void execute() {

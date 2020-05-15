@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import history.Memento;
 
-public class Editor extends Component {
+public final class Editor extends Component {
 
     private Window window;
     private String text;

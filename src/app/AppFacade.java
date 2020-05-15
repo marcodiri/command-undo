@@ -23,14 +23,16 @@ public class AppFacade {
         createWindow(); // create a Window by default on init
     }
 
-    // this should also be a Command but whatever
-    public void createWindow() {
+    // FIXME: this should also be a Command
+    // final to avoid fragile base class problem
+    public final void createWindow() {
         Window newWin = new Window("Window-"+UniqueID.getID(), commMng);
         windows.add(newWin);
         setActiveWindow(newWin.getName());
     }
 
-    public void setActiveWindow(String name) {
+    // final to avoid fragile base class problem
+    public final void setActiveWindow(String name) {
         windows.forEach(w->{
             if(w.getName() == name) {
                 activeWindow = w;

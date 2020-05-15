@@ -8,7 +8,7 @@ import history.*;
  * The {@code Receiver} of the Command pattern.<p>
  * The {@code Caretaker} of the Memento pattern.
  */
-public class Window {
+public final class Window {
 
     private final int id;
     private String name;
@@ -128,7 +128,7 @@ public class Window {
     /**
      * @param activeEditor the editor to focus on
      */
-    public void setActiveEditor(Editor editor) {
+    public final void setActiveEditor(Editor editor) {
         this.activeEditor = editor;
         System.out.println("Active editor: "+editor.getName());
     }

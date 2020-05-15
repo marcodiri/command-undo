@@ -1,6 +1,6 @@
 package component;
 
-public class Shortcut extends Component {
+public final class Shortcut extends Component {
 
     Shortcut(String name) {
         super(name);

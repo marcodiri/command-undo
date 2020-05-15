@@ -1,4 +1,4 @@
-public class Editor extends Component {
+public final class Editor extends Component {
     private String text;
     private int caretPos, selectionWidth;
     

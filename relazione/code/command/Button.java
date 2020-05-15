@@ -1,4 +1,4 @@
-public class Button extends Component {
+public final class Button extends Component {
     ...
     @Override
     public void click() {

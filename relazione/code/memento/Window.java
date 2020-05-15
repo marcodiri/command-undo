@@ -1,4 +1,4 @@
-public class Window {
+public final class Window {
     
     ...
     

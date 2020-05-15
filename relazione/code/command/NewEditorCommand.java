@@ -1,4 +1,4 @@
-public class NewEditorCommand extends Command {
+public final class NewEditorCommand extends Command {
     @Override
     public void execute() {
         ...

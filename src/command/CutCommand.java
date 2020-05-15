@@ -1,6 +1,6 @@
 package command;
 
-public class CutCommand extends Command {
+public final class CutCommand extends Command {
 
     @Override
     public void execute() {
